@@ -4,8 +4,7 @@ Package lossy simulates packet losses and latencies for net.Conn and net.PacketC
 
 It can be used to test robustness of applications and network protocols runs over unreliable protocols such as UDP or IP.
 
- */
-
+*/
 package lossy
 
 import (
@@ -13,6 +12,6 @@ import (
 	"time"
 )
 
-func init(){
+func init() {
 	rand.Seed(time.Now().UnixNano())
 }
