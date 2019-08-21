@@ -6,12 +6,3 @@ It can be used to test robustness of applications and network protocols runs ove
 
 */
 package lossy
-
-import (
-	"math/rand"
-	"time"
-)
-
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}

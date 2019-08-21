@@ -14,7 +14,7 @@ func Test(t *testing.T) {
 	const minLatency = time.Millisecond * 10
 	const maxLatency = time.Millisecond * 100
 	udpPacketConn, err := net.ListenUDP("udp", &net.UDPAddr{
-		IP: net.IPv4(127, 0, 0, 1),
+		IP:   net.IPv4(127, 0, 0, 1),
 		Port: 0,
 	})
 	if err != nil {
@@ -75,9 +75,9 @@ func Test(t *testing.T) {
 			dropped++
 		} else {
 			latency := received[i].Sub(send[i])
-			if latency < minLatency - latencySensitivity {
+			if latency < minLatency-latencySensitivity {
 				t.Error("latency is less than expected")
-			} else if latency > maxLatency + latencySensitivity {
+			} else if latency > maxLatency+latencySensitivity {
 				t.Error("latency is more than expected")
 			}
 		}
@@ -87,10 +87,10 @@ func Test(t *testing.T) {
 	}
 	const droppedSensitivity = packetLossRate * 0.25
 	dropRate := float64(dropped) / float64(maxByte)
-	if dropRate > packetLossRate + droppedSensitivity {
-		t.Error("might be false negative but dropped packet rate is greater than expected by", dropRate - packetLossRate)
-	} else if dropRate < packetLossRate - droppedSensitivity {
-		t.Error("might be false negative but dropped packet rate is less than expected by", packetLossRate - dropRate)
+	if dropRate > packetLossRate+droppedSensitivity {
+		t.Error("might be false negative but dropped packet rate is greater than expected by", dropRate-packetLossRate)
+	} else if dropRate < packetLossRate-droppedSensitivity {
+		t.Error("might be false negative but dropped packet rate is less than expected by", packetLossRate-dropRate)
 	}
 
 }

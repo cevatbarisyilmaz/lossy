@@ -15,6 +15,7 @@ type packetConn struct {
 	writeDeadline  time.Time
 	closed         bool
 	mu             *sync.Mutex
+	rand           *rand.Rand
 }
 
 // PacketConn wraps the given net.PacketConn and applies latency and packet losses to the written packets
@@ -27,6 +28,7 @@ func PacketConn(c net.PacketConn, minLatency, maxLatency time.Duration, packetLo
 		writeDeadline:  time.Time{},
 		closed:         false,
 		mu:             &sync.Mutex{},
+		rand:           rand.New(rand.NewSource(time.Now().UnixNano())),
 	}
 }
 
@@ -37,8 +39,8 @@ func (c *packetConn) WriteTo(p []byte, addr net.Addr) (int, error) {
 		return c.PacketConn.WriteTo(p, addr)
 	}
 	go func() {
-		if rand.Float64() > c.packetLossRate {
-			time.Sleep(c.minLatency + time.Duration(float64(c.maxLatency-c.minLatency)*rand.Float64()))
+		if c.rand.Float64() > c.packetLossRate {
+			time.Sleep(c.minLatency + time.Duration(float64(c.maxLatency-c.minLatency)*c.rand.Float64()))
 			c.mu.Lock()
 			_, _ = c.PacketConn.WriteTo(p, addr)
 			c.mu.Unlock()

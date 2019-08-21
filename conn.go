@@ -15,6 +15,7 @@ type conn struct {
 	writeDeadline  time.Time
 	closed         bool
 	mu             *sync.Mutex
+	rand           *rand.Rand
 }
 
 // Conn wraps the given net.Conn and applies latency and packet losses to the written packets
@@ -27,6 +28,7 @@ func Conn(c net.Conn, minLatency, maxLatency time.Duration, packetLossRate float
 		writeDeadline:  time.Time{},
 		closed:         false,
 		mu:             &sync.Mutex{},
+		rand:           rand.New(rand.NewSource(time.Now().UnixNano())),
 	}
 }
 
@@ -37,8 +39,8 @@ func (c *conn) Write(b []byte) (int, error) {
 		return c.Conn.Write(b)
 	}
 	go func() {
-		if rand.Float64() > c.packetLossRate {
-			time.Sleep(c.minLatency + time.Duration(float64(c.maxLatency-c.minLatency)*rand.Float64()))
+		if c.rand.Float64() > c.packetLossRate {
+			time.Sleep(c.minLatency + time.Duration(float64(c.maxLatency-c.minLatency)*c.rand.Float64()))
 			c.mu.Lock()
 			_, _ = c.Conn.Write(b)
 			c.mu.Unlock()
