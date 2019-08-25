@@ -21,24 +21,24 @@ func Example() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	lossyConn := lossy.Conn(conn, 1024, time.Second, time.Second*2, 0.25, lossy.UDPv4MinHeaderOverhead)
-	var dataWritten int
-	const messageCount = 32
+	lossyConn := lossy.NewConn(conn, 1024, time.Second, time.Second*2, 0.25, lossy.UDPv4MinHeaderOverhead)
+	var bytesWritten int
+	const packetCount = 32
 	go func() {
-		for i := 0; i < messageCount; i++ {
-			message := make([]byte, i*64)
-			dataWritten += len(message)
-			rand.Read(message)
-			_, err := lossyConn.Write(message)
+		for i := 0; i < packetCount; i++ {
+			packet := make([]byte, i*64)
+			bytesWritten += len(packet) // Ignoring the packet headers
+			rand.Read(packet)
+			_, err := lossyConn.Write(packet)
 			if err != nil {
 				log.Fatal(err)
 			}
 		}
-		fmt.Println("Sent", messageCount, "messages with total size of", dataWritten, "bytes")
+		fmt.Println("Sent", packetCount, "packets with total size of", bytesWritten, "bytes")
 	}()
 	const timeOut = time.Second * 5
-	var dataRead int
-	var messagesReceived int
+	var bytesRead int
+	var packetsReceived int
 	startTime := time.Now()
 	for {
 		err = packetConn.SetReadDeadline(time.Now().Add(timeOut))
@@ -58,9 +58,9 @@ func Example() {
 		if addr.String() != conn.LocalAddr().String() {
 			log.Fatal("hijacked by", addr.String())
 		}
-		messagesReceived++
-		dataRead += n
+		packetsReceived++
+		bytesRead += n // Ignoring the packet headers
 	}
 	dur := time.Now().Sub(startTime) - timeOut
-	fmt.Println("Received", messagesReceived, "messages with total size of", dataRead, "bytes in", dur.Seconds(), "seconds")
+	fmt.Println("Received", packetsReceived, "packets with total size of", bytesRead, "bytes in", dur.Seconds(), "seconds")
 }

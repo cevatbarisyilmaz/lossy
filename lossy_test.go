@@ -53,8 +53,8 @@ func TestBandwidth(t *testing.T) {
 			t.Error(err)
 		}
 	}()
-	c = lossy.Conn(c, bandwidth, 0, 0, 0, headerOverhead)
-	pc = lossy.PacketConn(pc, bandwidth, 0, 0, 0, headerOverhead)
+	c = lossy.NewConn(c, bandwidth, 0, 0, 0, headerOverhead)
+	pc = lossy.NewPacketConn(pc, bandwidth, 0, 0, 0, headerOverhead)
 	var messages [][]byte
 	for i := 0; i < messageCount; i++ {
 		message := make([]byte, messageSize)
@@ -145,8 +145,8 @@ func TestLatency(t *testing.T) {
 			t.Error(err)
 		}
 	}()
-	c = lossy.Conn(c, 0, minLatency, maxLatency, 0, 0)
-	pc = lossy.PacketConn(pc, 0, minLatency, maxLatency, 0, 0)
+	c = lossy.NewConn(c, 0, minLatency, maxLatency, 0, 0)
+	pc = lossy.NewPacketConn(pc, 0, minLatency, maxLatency, 0, 0)
 	var messages [][]byte
 	for i := 0; i < messageCount; i++ {
 		message := make([]byte, messageSize)
@@ -245,8 +245,8 @@ func TestPacketLoss(t *testing.T) {
 			t.Error(err)
 		}
 	}()
-	c = lossy.Conn(c, 0, 0, 0, packetLossRate, 0)
-	pc = lossy.PacketConn(pc, 0, 0, 0, packetLossRate, 0)
+	c = lossy.NewConn(c, 0, 0, 0, packetLossRate, 0)
+	pc = lossy.NewPacketConn(pc, 0, 0, 0, packetLossRate, 0)
 	var messages [][]byte
 	for i := 0; i < messageCount; i++ {
 		message := make([]byte, messageSize)
@@ -337,8 +337,8 @@ func TestErrors(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	pc = lossy.PacketConn(pc, 0, 0, 0, 0, 0)
-	c = lossy.Conn(c, 0, 0, 0, 0, 0)
+	pc = lossy.NewPacketConn(pc, 0, 0, 0, 0, 0)
+	c = lossy.NewConn(c, 0, 0, 0, 0, 0)
 
 	err = c.SetWriteDeadline(time.Now())
 	if err != nil {

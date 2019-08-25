@@ -21,7 +21,7 @@ type conn struct {
 	headerOverhead    int
 }
 
-// Conn wraps the given net.Conn with a lossy connection.
+// NewConn wraps the given net.Conn with a lossy connection.
 //
 // bandwidth is in bytes/second.
 // i.e. enter 1024 * 1024 for a 8 Mbit/s connection.
@@ -38,7 +38,7 @@ type conn struct {
 // headerOverhead is the header size of the underlying protocol of the connection.
 // It is used to simulate bandwidth more realistically.
 // If bandwidth is unlimited, headerOverhead is ignored.
-func Conn(c net.Conn, bandwidth int, minLatency, maxLatency time.Duration, packetLossRate float64, headerOverhead int) net.Conn {
+func NewConn(c net.Conn, bandwidth int, minLatency, maxLatency time.Duration, packetLossRate float64, headerOverhead int) net.Conn {
 	var timeToWaitPerByte float64
 	if bandwidth <= 0 {
 		timeToWaitPerByte = 0
