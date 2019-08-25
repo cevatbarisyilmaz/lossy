@@ -4,7 +4,7 @@
 [![GitHub](https://img.shields.io/github/license/cevatbarisyilmaz/lossy)](https://github.com/cevatbarisyilmaz/lossy/blob/master/LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/cevatbarisyilmaz/lossy)](https://goreportcard.com/report/github.com/cevatbarisyilmaz/lossy)
 
-Go package to simulate bandwidth, latency and packet loss for net.NewPacketConn and net.NewConn interfaces.
+Go package to simulate bandwidth, latency and packet loss for net.PacketConn and net.Conn interfaces.
 
 Its main usage is to test robustness of applications and network protocols run over unreliable transport protocols such as UDP or IP.
 As a side benefit, it can also be used as outbound bandwidth limiter.
