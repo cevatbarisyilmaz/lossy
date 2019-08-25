@@ -1,7 +1,7 @@
 # lossy
 [![GoDoc](https://godoc.org/github.com/cevatbarisyilmaz/lossy?status.svg)](https://godoc.org/github.com/cevatbarisyilmaz/lossy)
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/cevatbarisyilmaz/lossy?sort=semver)
-![GitHub](https://img.shields.io/github/license/cevatbarisyilmaz/lossy)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/cevatbarisyilmaz/lossy?sort=semver)](https://github.com/cevatbarisyilmaz/lossy/releases)
+[![GitHub](https://img.shields.io/github/license/cevatbarisyilmaz/lossy)](https://github.com/cevatbarisyilmaz/lossy/blob/master/LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/cevatbarisyilmaz/lossy)](https://goreportcard.com/report/github.com/cevatbarisyilmaz/lossy)
 
 Go package to simulate bandwidth, latency and packet loss for net.NewPacketConn and net.NewConn interfaces.
